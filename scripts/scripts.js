@@ -39,12 +39,6 @@
         const expiry = parseInt(localStorage.getItem("tokenExpiry"),10);
         const now = Date.now();
         const progressBar = document.querySelector('.token-progress-bar');
-
-        if(!expiry || expiry < now){
-            document.getElementById("tokenTimer").textContent = "Token expired.";
-            progressBar.style.width = '1%';
-            return;
-        }
         
         const remaining = expiry - now;
         const totalDuration = parseInt(localStorage.getItem("tokenDuration"), 10);
