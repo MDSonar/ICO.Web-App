@@ -42,7 +42,7 @@
 
         if(!expiry || expiry < now){
             document.getElementById("tokenTimer").textContent = "Token expired.";
-            progressBar.style.width = '0%';
+            progressBar.style.width = '1%';
             return;
         }
         
