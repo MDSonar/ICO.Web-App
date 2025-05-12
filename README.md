@@ -37,11 +37,9 @@ A modern web interface for interacting with FWXAPI, featuring real-time data mon
    |--index.html
 
 ## Configuration Notes
-1. Upate API endpoints in scripts.js
+1. Upate API endpoint hostname in scripts.js
    ```bash
-   const API_URL = 'https://your-server/fwxapi/rest';
-   const AUTH_URL = 'https://your-server/security/connect/authorize';
-   const TOKEN_URL = 'https://your-server/security/connect/token';
+   const hostName = 'your-server';
 2. Set your OAuth Credentials
    ```bash
    const CLIENT_ID = 'your-client-id';
