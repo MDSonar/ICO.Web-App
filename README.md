@@ -52,3 +52,6 @@ This implementation user client-side credential for demonstration purpose only. 
 1. Never expose secrets in client-side code
 2. Implement proper token storage/rotation
 3. User server-side authentication flow
+
+## Software version
+`ICONICS GENESIS64 10.97.3 CFR1`
