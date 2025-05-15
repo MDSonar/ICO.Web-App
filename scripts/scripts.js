@@ -1,11 +1,12 @@
-    const hostName = 'coe-win11-1'
-    const CLIENT_ID = 'TestRESTApi';
+
+    const hostname = 'ms-pc';
+    const CLIENT_ID = 'testApi';
     const CLIENT_SECRET = '123456789'; //AuthorizationCode flow: client secret 
-    const REDIRECT_URI = `https://${hostName}/AnyGlass/Home.html`;
-    const AUTH_URL = `https://${hostName}/fwxserverweb/security/connect/authorize`;
-    const TOKEN_URL = `https://${hostName}/fwxserverweb/security/connect/token`;
+    const REDIRECT_URI = `https://${hostname}/AnyGlass/pubdisplay/testApi/src/index.html`;
+    const AUTH_URL = `https://${hostname}/fwxserverweb/security/connect/authorize`;
+    const TOKEN_URL = `https://${hostname}/fwxserverweb/security/connect/token`;
     const SCOPE = 'fwxserver offline_access';
-    const API_URL = `https://${hostName}/fwxapi/rest`;
+    const API_URL = `https://${hostname}/fwxapi/rest`;
 
     let accessToken = localStorage.getItem("accessToken") || "";
 
@@ -39,6 +40,12 @@
         const expiry = parseInt(localStorage.getItem("tokenExpiry"),10);
         const now = Date.now();
         const progressBar = document.querySelector('.token-progress-bar');
+
+        if(!expiry || expiry < now){
+            document.getElementById("tokenTimer").textContent = "Token expired.";
+            progressBar.style.width = '0%';
+            return;
+        }
         
         const remaining = expiry - now;
         const totalDuration = parseInt(localStorage.getItem("tokenDuration"), 10);
@@ -163,7 +170,7 @@
     //API Interaction 
     async function getData(){
     try{
-        const response = await fetch('https://coe-win11-1/fwxapi/rest/data/?pointName=@sim64:Float.Random(1,-50.0,50.0,0).Value',{
+        const response = await fetch(`https://${hostname}/fwxapi/rest/data/?pointName=@sim64:Float.Random(1,-50.0,50.0,0).Value`,{
             headers:{'Authorization':'Bearer ' + accessToken}
         });
         const data = await response.json();
@@ -177,7 +184,7 @@
 
     async function postData(){
     try{
-        const response = await fetch('https://coe-win11-1/fwxapi/rest/data',{
+        const response = await fetch(`https://${hostname}/fwxapi/rest/data`,{
             method: 'POST',
             headers:{
             'Content-Type':'application/json',
@@ -207,7 +214,7 @@
             return;
         }
         try{
-            const response = await fetch('https://coe-win11-1/fwxapi/rest/data/write',{
+            const response = await fetch(`https://${hostname}/fwxapi/rest/data/write`,{
                 method: 'POST',
                 headers:{
                     'Content-Type':'application/json',
@@ -229,7 +236,7 @@
 
     async function readDb(){
         try{
-            const response = await fetch('https://coe-win11-1/fwxapi/rest/dataset?PointName=db:Northwind.Orders',{
+            const response = await fetch(`https://${hostname}/fwxapi/rest/dataset?PointName=db:Northwind.Orders`,{
                 headers:{'Authorization':'Bearer ' + accessToken}
             });
             const result = await response.json();
@@ -255,7 +262,7 @@
 
     async function fetchLiveData(){
     try{
-        const response = await fetch('https://coe-win11-1/fwxapi/rest/data', {
+        const response = await fetch(`https://${hostname}/fwxapi/rest/data`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json','Authorization':'Bearer ' + accessToken},
             body: JSON.stringify({
@@ -299,7 +306,7 @@
             }
 
             const point = encodeURIComponent(hhPoint);
-            const response = await fetch(`https://coe-win11-1/fwxapi/rest/history?pointName=${point}&StartDate=${startDate}&EndDate=${endDate}`,{
+            const response = await fetch(`https://${hostname}/fwxapi/rest/history?pointName=${point}&StartDate=${startDate}&EndDate=${endDate}`,{
                 headers:{'Authorization':'Bearer ' + accessToken}
             });
             const data = await response.json();
@@ -425,6 +432,6 @@
         const savedType = localStorage.getItem('authType') || 'pkce';
         document.querySelector(`input[name="authType"][value="${savedType}"]`).checked = true;
         //Handle saved format type 
-        const savedFormatType = localStorage.getItem('formatType') || 'pkce';
+        const savedFormatType = localStorage.getItem('formatType') || 'table';
         document.querySelector(`input[name="formatType"][value="${savedFormatType}"]`).checked = true;
     });
