@@ -1,8 +1,8 @@
 
-    const hostname = 'ms-pc';
-    const CLIENT_ID = 'testApi';
+    const hostname = 'MS-PC';
+    const CLIENT_ID = 'TestApi';
     const CLIENT_SECRET = '123456789'; //AuthorizationCode flow: client secret 
-    const REDIRECT_URI = `https://${hostname}/AnyGlass/pubdisplay/testApi/src/index.html`;
+    const REDIRECT_URI = `https://${hostname}/InHouseApp/TestApi/index.html`;
     const AUTH_URL = `https://${hostname}/fwxserverweb/security/connect/authorize`;
     const TOKEN_URL = `https://${hostname}/fwxserverweb/security/connect/token`;
     const SCOPE = 'fwxserver offline_access';
@@ -170,7 +170,7 @@
     //API Interaction 
     async function getData(){
     try{
-        const response = await fetch(`https://${hostname}/fwxapi/rest/data/?pointName=@sim64:Float.Random(1,-50.0,50.0,0).Value`,{
+        const response = await fetch(`https://${hostname}/fwxapi/rest/v1/Data?pointName=svrsim:random double slow`,{
             headers:{'Authorization':'Bearer ' + accessToken}
         });
         const data = await response.json();
@@ -397,7 +397,12 @@
 
     initializeGlobalRefresh();
 
-    const unregisterLiveData = registerRefreshableFunction(fetchLiveData);
+    document.getElementById("liveToggle").addEventListener("change", function(){
+        const isChecked = this.checked;
+        if(isChecked){
+            const unregisterLiveData = registerRefreshableFunction(fetchLiveData);
+        }
+    });
     const unregisterTokenUpdate = registerRefreshableFunction(updateTokenTimer);
 
     checkAuth();
